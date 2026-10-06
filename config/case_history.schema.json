@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/auliaardan/amc-practice-system/blob/main/config/case_history.schema.json",
+  "title": "AMC Practice History Event",
+  "oneOf": [
+    {
+      "title": "Station generated",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "event_type",
+        "station_id",
+        "generated_at",
+        "case_key",
+        "family_key",
+        "cluster_key",
+        "specialty",
+        "archetype",
+        "complaint_theme",
+        "age_band",
+        "setting",
+        "counselling_heavy",
+        "acute",
+        "source_type",
+        "catalog_version"
+      ],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "event_type": { "const": "station_generated" },
+        "station_id": { "type": "string", "minLength": 1 },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "case_key": { "type": "string", "minLength": 1 },
+        "family_key": { "type": "string", "minLength": 1 },
+        "cluster_key": { "type": "string", "minLength": 1 },
+        "diagnosis_key": { "type": ["string", "null"] },
+        "diagnosis_family_key": { "type": ["string", "null"] },
+        "specialty": { "type": "string", "minLength": 1 },
+        "archetype": { "type": "string", "minLength": 1 },
+        "complaint_theme": { "type": "string", "minLength": 1 },
+        "medication_device_key": { "type": ["string", "null"] },
+        "age_band": { "type": "string", "minLength": 1 },
+        "setting": { "type": "string", "minLength": 1 },
+        "counselling_heavy": { "type": "boolean" },
+        "acute": { "type": "boolean" },
+        "source_type": { "enum": ["counselling", "diagnostic"] },
+        "catalog_version": { "type": "string", "minLength": 1 },
+        "requested_specialty": { "type": ["string", "null"] }
+      }
+    },
+    {
+      "title": "Station feedback",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "event_type",
+        "station_id",
+        "feedback_at",
+        "rating"
+      ],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "event_type": { "const": "station_feedback" },
+        "station_id": { "type": "string", "minLength": 1 },
+        "feedback_at": { "type": "string", "format": "date-time" },
+        "rating": {
+          "enum": [
+            "CLEAR PASS",
+            "BORDERLINE PASS",
+            "BORDERLINE FAIL",
+            "CLEAR FAIL"
+          ]
+        }
+      }
+    }
+  ]
+}
