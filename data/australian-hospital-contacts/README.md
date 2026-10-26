@@ -24,3 +24,24 @@ AIHW content and naming may have changed since the mirrored snapshot. The curren
 - Avoid sending mass duplicate emails to shared recruitment inboxes.
 
 Attribution: Based on Australian Institute of Health and Welfare material, sourced via an independently published GitHub mirror. AIHW's own copyright and data licensing apply. No claim of official government endorsement.
+
+
+## Actionable recruitment emails / mail-merge
+
+The earlier hospital-site CSV is **not email-ready**. For an actual outreach workflow, use:
+- [contacts_new_departmental_inboxes.csv](./contacts_new_departmental_inboxes.csv): 13 *additional*, publicly published team/corporate email addresses from NSW HETI, QLD Health and Calvary. This is the same 12-column format as the owner's original local `contacts.csv`. Not all routes recruit RMOs; the source links permit verification.
+- [rmo_email_outreach.py](./rmo_email_outreach.py): review-first CLI that only selects `include=yes` and `status=not_contacted`, deduplicates by email across input files, excludes recipients already marked `contacted`, and records a local send log.
+
+**Setup**: keep the original 96-contact `contacts.csv` private on your computer; download only the new file and script from GitHub. From the directory containing them:
+
+```bash
+python rmo_email_outreach.py --csv contacts.csv contacts_new_departmental_inboxes.csv
+python rmo_email_outreach.py --csv contacts.csv contacts_new_departmental_inboxes.csv --draft --limit 5
+# AFTER reviewing draft content, to explicitly send a controlled batch:
+# GMAIL_APP_PASSWORD is obtained from your own Gmail account, never store it in source control.
+python rmo_email_outreach.py --csv contacts.csv contacts_new_departmental_inboxes.csv --send --confirm-send YES --limit 5 --cv Aulia_RMO_CV.pdf
+```
+
+Do not set `--send` without reviewing targets and content. The `--draft` switch creates local .eml files, **not** drafts inside Gmail. The `--send` switch delivers directly via Gmail SMTP; it requires an application password. Keep `rmo_sent_log.csv` locally to avoid re-sending. Never publish CV, passwords, sending logs or the original contacts file in this public repository.
+
+A published JMO email does not establish IMG eligibility, an available January 2027 vacancy, provisional-registration supervision, or visa sponsorship. First replies should confirm those facts. For NSW, the main 2027 JMO hiring pathway remains its formal online recruitment process; email enquiry is not a substitute for applying.
